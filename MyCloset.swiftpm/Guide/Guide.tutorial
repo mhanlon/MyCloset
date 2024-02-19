@@ -1,0 +1,400 @@
+@GuideBook(title: "My Closet", icon: title.png, background: titleBackground.png, firstFile: MyClosetApp.swift) {
+    @WelcomeMessage(title: "Welcome to My Closet!") {
+        In My Closet, you're going to explore how to build the foundations of an app, bit by bit.
+    }
+    
+    @Guide {
+        @Step(title: "Building an App") {
+            @ContentAndMedia {
+                Oftentimes coders start out building an app and make changes to simplify the code they have to write or perform a common task.
+                
+                In this walk-through, we'll look at how we build out an app that would list the items of clothing in our closet, and add some features as we go that seem like a logical next step for the app.
+                
+                While more files might seem like more work, by separating our code out our goal is to organize our thinking a little bit and make it easier to read the code, in the end.                
+            }
+            @TaskGroup(title: "Our First Closet") {
+                For starters, check out the ContentView for a way to build out a listing of items in your closet.
+                
+                @Task(type: walkthrough, id: "intro", title: "Starting simple", file: ContentView.swift) {
+                    @Page(id: "1.intro", title: "") {
+                        This is our content view, where we use a constant, called `clothingItems`, which is a list of these things called `ClothingItem`. That represents a closet full of clothing items we're trying to catalog or track.
+                        
+                        We'll talk more about that in a second.
+                    }
+                    @Page(id: "1.foreach", title: "") {
+                        We use a `ForEach` statement to draw a representation of each clothing item in our closet.
+                        
+                        Let's take a look at the type we use to hold information about our clothing items.
+                    }
+                }
+                @Task(type: walkthrough, id: "customdatastructure", title: "A custom type", file: ClothingItem.swift) {
+                    @Page(id: "1.item", title: "") {
+                        We've created a new type, called `ClothingItem` in this file: `ClothingItem.swift`.
+                    }
+
+                    @Page(id: "1.naming", title: "") {
+                        Best practice: We started our type name with a capital letter and used camel-case to capitalize the first letter of each word in our type name.
+
+                        This makes our code easier to read quickly, if we follow certain conventions.
+                    }
+                    
+                    @Page(id: "1.properties", title: "") {
+                        We care about the name and size of our clothing item, and whether or not it's one of our favorites.
+                        
+                        What properties would you care about in your app?
+
+                        Maybe a color property?
+
+                        Whether or not you'd leant it out to a friend?
+                        
+                        How long you've had it?
+                    }
+                }
+            }
+            @TaskGroup(title: "A Custom View Closet") {
+                This looks good, but if I like the look I've created and want to display it elsewhere, and not just on this particular screen of my app, I would have to copy and paste a lot of code, and there's a better chance that I miss  out on a key line or two.
+                
+                So how would I solve this issue?
+                
+                We can create a custom view to focus on just drawing our clothing item's appearance on screen.
+                
+                @Task(type: experiment, id: "introcustom", title: "Use a custom View", file: MyClosetApp.swift) {
+                    @Page(id: "2.intro", title: "") {
+                        As you get more confident and want to get more sophiscated, try commenting out the `ContentView()` line.
+                        
+                        Place two '/'s in front of `ContentView()` so that it looks like this:
+                        `//ContentView()`
+                        
+                        Place this code on the line below your newly commented-out line:
+                        ```
+                        MyClosetView()
+                        ```
+                    }
+                    @Page(id: "2.outro", title: "") {
+                        That's going to make a new View the main starting point of our app.
+                        
+                        Let's go look at that View now.
+                    }
+                }
+                @Task(type: walkthrough, id: "customview", title: "Changes to our ContentView", file: MyClosetView.swift) {
+                    @Page(id: "2.customrow", title: "") {
+                        The big change in this view from the previous one is this new `ClothingItemRowView`.
+                        
+                        (There are some comments about other changes we could make to our view, but we'll focus on trying to clean up our view by extracting all the code we wrote to display the clothing item into its own View.)
+                    }
+                }
+                @Task(type: walkthrough, id: "clothingrow", title: "A View for each clothing item", file: ClothingItemRowView.swift) {
+                    @Page(id: "2.rowview", title: "") {
+                        This code is identical to the code we used in `ContentView.swift`.
+                        
+                        We have a HStack with the item name, a spacer, and an image, along with all the modifiers we used to make our clothing item look a certain way.
+                    }
+                    @Page(id: "2.property", title: "") {
+                        And the other big change is this `clothingItem` property, which is any given clothing item we want to display.
+                        
+                        Why?
+                        
+                        By making this code its own file we have created something that we can re-use elsewhere we want to display clothing items, instead of having to copy and paste a whole lot more code around.
+                    }
+                }
+            }
+            @TaskGroup(title: "A Closet for my Whole App") {
+                When we build an app, oftentimes we have data we need to access across nearly all the Views a person might visit. For example, for our app, it's all about our closet. So it doesn't make sense for just one view to own all the items in my closet.
+
+                Now we'll create our closet for the whole app and learn how to use it from any View.                
+                
+                @Task(type: experiment, id: "introdata", title: "Use an EnvironmentObject", file: MyClosetApp.swift) {
+                    @Page(id: "3.intro", title: "") {
+                        We will create our closet in our app, so add this line below `struct MyClosetApp: App`.
+                        
+                        ```
+                        @StateObject var myCloset = MyCloset()
+                        ```
+                      
+                      A `@StateObject` lets SwiftUI know that it will need to watch this object for changes, as if it were monitoring our own closet for things being added and removed.
+                    }
+                    @Page(id: "3.appview", title: "") {
+                        We'll use `MyAdvancedClosetView` to move our closet out of the view and into its own Swift file.
+                        
+                        Comment out (or delete!) `MyClosetView()`, as we won't need that view any longer, and put the following code in its place (or below the comment):
+                        ```
+                        MyAdvancedClosetView()
+                        ``` 
+                        This lets us keep our data and how we present it separate, which will let one coder work on the 'brains' of the app while another works on what gets displayed.
+                    }
+                    @Page(id: "3.passobject", title: "") {
+                        Last but not least, we need to pass our closet into our app's view using this modifier.
+                        Place it below the newly-added `MyAdvancedClosetView()` line: 
+                        ```
+                        .environmentObject(myCloset)
+                        ```
+                    }
+                    @Page(id: "3.outrodata", title: "") {
+                        Now let's go look at what changes for us now.
+                    }
+                }
+                @Task(type: walkthrough, id: "dataview", title: "Changes to our ContentView", file: MyAdvancedClosetView.swift) {
+                    @Page(id: "3.environmentobject", title: "") {
+                        This change will tell SwiftUI that we want to use the `MyCloset` that was passed down from the app in this view.
+                        
+                        If we didn't need to use `myCloset` in this view we don't need to declare this variable.
+                        
+                        ![](possible-environment-error.png)  
+
+                        Hint: If you see an error about an environment variable not being passed down, you may need to hit the reload symbol above the Preview.
+                    }
+                    @Page(id: "3.outro", title: "") {
+                        And that's it!
+                        
+                        Not a major change, but now, if multiple people are working on code and views that need to access the closet they can simply add this variable to their view and they'll access our app's closet.
+                    }
+                }
+            }
+            @TaskGroup(title: "Editing my Closet") {
+                This is all well and good, but who has a closet where we never add items, remove them, or our favorites change over time?
+                
+                Our next step would be to make our closet way more personal to us.       
+                
+                @Task(type: experiment, id: "editingdata", title: "Editing Data", file: MyClosetApp.swift) {
+                    @Page(id: "4.intro", title: "") {
+                        We will create our closet in this version of our app, so we'll leave this un-commented (or un-comment it if it is commented out).
+                        
+                        A `@StateObject` lets SwiftUI know that it will need to watch this object for changes, as if it were monitoring our own closet for things being added and removed. 
+                    }
+                    @Page(id: "4.appview", title: "") {
+                        We'll use `MySuperAdvancedClosetView` to make the big changes to enable editing of our closet.
+                        
+                        Comment out `MyAdvancedCloseView()` and add the following code:
+                        
+                        ```
+                        MySuperAdvancedClosetView()
+                        ```
+                    }
+                    @Page(id: "4.passobject", title: "") {
+                        Last but not least, we need to pass our closet into our app's view using this `.environmentObject(myCloset)` modifier.
+                    }
+                    @Page(id: "4.outrodata", title: "") {
+                        Now let's go look at what changes for us now.
+                    }
+                }
+                @Task(type: walkthrough, id: "bindings", title: "Changes to our ContentView", file: MySuperAdvancedClosetView.swift) {
+                    @Page(id: "4.listbinding", title: "") {
+                        The big change in this view from the previous one is this `$`.
+                        
+                        This tells SwiftUI that we're going to loop over every item in our closet and be able to potentially change them in this view or another view.
+                        
+                        This will be important when we look at our new `MySuperAdvancedClothingItemRowView`, but we'll get to that in a second.
+                        
+                    }
+                    @Page(id: "4.swipe", title: "Removing items") {
+                        So what if we want to get rid of some of our clothing items?
+                        
+                        Well, we can use this thing called `.swipeActions`. Many apps with a list will allow people to swipe to remove items.
+                        
+                        These lines of code will display a button, in red, thanks to that `role: .destructive` code, and remove all items that match the item you're swiping (which should only be one). And the `withAnimation` code will make sure it looks smooth.
+                    }
+                    @Page(id: "4.toolbar", title: "Adding items") {
+                        Now, our closet won't be all that interesting if we can't add clothes to it.                        
+                        Like many other apps, we'll add a plus button to the top part of the screen to add items.
+                        
+                        We can use this `.toolbar` modifier to add a ToolbarItem, and place it in the top bar, on the trailing side of the screen. And inside the ToolBarItem is our button.
+                    }
+                    @Page(id: "4.toolbarbutton", title: "") {
+                        But where did this `isAddingItem` come from?
+                        
+                        With `Bool` types we can call this special method which will turn it `false`, if it's `true` and `true` if it's `false`, a bit like toggling a light switch. 
+                    }
+
+                    @Page(id: "4.sheetstate", title: "") {
+                        Here's where we added `isAddingItem`. We've prefixed the variable with `@State ` to let SwiftUI know that this is something that might change.
+                        
+                        But why did we add that? And why might it not be showing up in your own app when you use a `.toolbar` modifier?
+                        
+                        (I told you, this is a little more super advanced...)
+                    }
+                    
+                    @Page(id: "4.stack", title: "") {
+                        First, let's tackle the issue of why a toolbar item might not be showing up.
+                        
+                        You need to embed your view in a `NavigationStack` for a toolbar to show up, so we've done that here.
+                        
+                        The closing curly brace is way at the end of our body, enclosing the whole thing.
+                    }
+                    
+                    @Page(id: "4.presentsheet", title: "") {
+                        Now why on earth did we add that `isAddingItem` property?
+                        
+                        We can use that property to tell SwiftUI whether or not it should display a sheet over our screen. When we're adding or editing data in our app it's best practice to use a sheet, so that the person can focus on that task.
+                    }
+
+                    @Page(id: "4.1outro", title: "") {
+                        Okay, that was a lot.
+                        
+                        Let's check out how our `AddClothingItem` view works.
+                    }
+
+                    
+                }
+                @Task(type: walkthrough, id: "addclothingitem", title: "Adding a clothing item", file: AddClothingItemView.swift) {
+                    @Page(id: "4.newItem", title: "") {
+                        We have a property to store the new item we're adding. We'll start it with an empty name and size, and it's definitely not our favorite, if it's not got a name or size! 
+                    }
+                    @Page(id: "4.form", title: "") {
+                        We can use a `Form` and `TextField`s to capture the name and size of our new item. A `TextField` is the right tool to use if you expect someone to enter a `String`.
+                        
+                        But what about whether something is your favorite or not? That's a yes or no type of thing. For those properties, we can use a `Toggle`.
+
+                        Because both a `TextField` and `Toggle` can change these values we use the `$` to tell SwiftUI that this might change.
+                    }
+
+                    @Page(id: "4.save", title: "") {
+                        Now that we've entered in the details of our clothing item, we want to add it to our closet.
+                        
+                        When a person presses our "Add to Closet" button we'll use the next line of code to add the `newItem` to our closet's `clothingItems`.
+                        
+                        Then we call this `dismiss()` method...
+                    }
+                    @Page(id: "4.dismiss", title: "") {
+                        We need to add this line, which will let us write the line of code we saw inside the "Add to Closet" button to dismiss the sheet that has popped up over the rest of our app.
+                    }
+                    @Page(id: "4.cancel", title: "") {
+                        And, because we want to allow people to change their mind, or maybe they just pressed the "+" button by accident, we will also have a "Cancel" button where we'll just called `dismiss()`, without adding the `newItem` to our `clothingItems`.
+                    }
+                    @Page(id: "4.2.outro", title: "") {
+                        So that's adding an item, but what if we want to change whether or not an item is one of our favorites?
+                        
+                        Let's go look at `MySuperAdvancedClothingItemRowView` and how we use that `$` we mentioned ages ago.
+                    }
+                }
+                @Task(type: walkthrough, id: "bindingclothingrow", title: "A View for each clothing item", file: MySuperAdvancedClothingItemRowView.swift) {
+                    @Page(id: "4.bindingproperty", title: "") {
+                        This code is nearly identical to the code we used in `ClothingItemRowView.swift`.
+                        
+                        The first change we made was to make the `clothingItem` property a `var` instead of a `let` constant because we want to change whether or not it's one of our favorites.
+                        We also added a `@Binding ` in front of the variable to tell SwiftUI that someone will be passing in a property that we can change (and the change will be pushed up to the view this one lives in). 
+                    }
+                    @Page(id: "4.bindingbutton", title: "") {
+                        And once we've done that, we can put our `Image` into a `Button` and toggle whether or not some clothing item is a favorite.
+                    }
+                    @Page(id: "4.outro", title: "") {
+                        This is a pretty good crack at an app to catalogue our closet... but what if we want more out of our app?
+                    }
+                }
+            }
+            @TaskGroup(title: "Searching my Closet") {
+                We could be happy with this stage of our app... but when we start adding a lot of items we're going to run into a problem... how do we find things in our closet?       
+                
+                Let's add some search functionality.
+                
+                @Task(type: experiment, id: "searchingdata", title: "Searching Data", file: MyClosetApp.swift) {
+                    @Page(id: "5.appview", title: "") {
+                        We'll use `MySuperSearchableAdvancedClosetView` to make the relatively minor changes to enable editing of our closet.
+                        
+                        Comment out `MySuperAdvancedCloseView()` and add the following code:
+                        
+                        ```
+                        MySuperSearchableAdvancedClosetView()
+                        ```
+                    }
+                    @Page(id: "5.outrodata", title: "") {
+                        Now let's go look at what changes for us to search our closet.
+                    }
+                }
+                @Task(type: walkthrough, id: "search", title: "Changes to our ContentView", file: MySuperSearchableAdvancedClosetView.swift) {
+                    @Page(id: "5.searchstate", title: "") {
+                        First we'll add some `@State` to hold the text a person wants to search their closet for.
+                    }
+                    @Page(id: "5.searchable", title: "") {
+                        Next we add the `.searchable(text: $searchText)` modifier to our list.
+                        
+                        This will tell SwiftUI that it should display a search prompt at the top of the list amd the text a person types will be put into the `searchText` variable. 
+                    }
+                    @Page(id: "5.searchresults", title: "") {
+                        To change what gets shown in the list we want to use that `searchText` to filter our list of results.
+                        
+                        Because our list is editable, we have to do a little extra work, and wrap our search results in a Binding... we'll also have some more work to do, later, to disable editing while we're searching for something.
+                        
+                        But the core code we are interested in here is the `filter`, where we convert the search text to lowercase and our clothing items' `name` to lowercase, as well, and do the same for `size` and if either the size or name contain the text being typed in the search field, that clothing item will be in our list.
+                    }
+                    @Page(id: "5.searchablelist", title: "") {
+                        To make our search results appear in the list, we need to change what we're making the list out of... so we changed that from `$myCloset.clothingItems` to `searchResults`.
+                        
+                        We could stop here, but we have an issue: we didn't write our new `searchResults` to handle editing and updates while a person is searching for something.
+                        
+                        To keep things simple, we'll disable editing for now in 3 places.
+                    }
+                    @Page(id: "5.clearsearchtext", title: "") {
+                        First thing we'll do is clear the search text when we're adding a new clothing item, otherwise someone might get confused when they add an item and it doesn't show up in the list because it doesn't meet the search criteria.
+                    }
+
+                    
+                    @Page(id: "5.disabledrows", title: "") {
+                        We'll also disable the rows if the`searchText` is NOT empty (`!searchText.isEmpty`) so people can't favorite items when they're searching.
+                        
+                        This feature would make sense... but let's simplify our coding lives for the moment.
+                    }
+                    
+
+                    @Page(id: "5.outro", title: "") {
+                        And now we have search enabled in our app!
+                        
+                        Of course, some of the compromises we made to disable editing while searching are not ideal for a real world app.
+                        
+                        So the next logical question would be... how do we handle updates when we've searched for something?
+                    }
+                }
+            }
+            @TaskGroup(title: "Searching AND Editing") {
+                Okay, we're going to add our last feature.
+        
+                Now that we have search, it makes sense to allow someone to edit the items they've searched for.
+        
+                @Task(type: experiment, id: "searchingeditingdata", title: "Searching and Editing Data", file: MyClosetApp.swift) {
+                    @Page(id: "6.appview", title: "") {
+                        We'll use `MySuperEditableSearchableAdvancedClosetView` to make the relatively minor changes to enable editing of our closet.
+                
+                    Comment out `MySuperSearchableAdvancedClosetView()` and add the following code:
+                
+                    ```
+                    MySuperEditableSearchableAdvancedClosetView()
+                    ```
+                    }
+                    @Page(id: "6.outrodata", title: "") {
+                        Now let's go look at what changes for us to search AND edit our closet.
+                    }
+                }
+                @Task(type: walkthrough, id: "searchandedit", title: "Changes to our ContentView", file: MySuperEditableSearchableAdvancedClosetView.swift) {
+                    @Page(id: "6.searchresults", title: "") {
+                        This more complex bit of code is where we need to make our change to support favoriting something we've searched for.
+                        
+                        When someone makes a change to an item, the `newValue` will be the filtered list with updated clothing items.
+                    }
+                    @Page(id: "6.searchresults.foreach", title: "") {
+                        For each item in new list, we're going to replace the original in `myCloset.clothingItems`.
+                        
+                        So we loop over the new list...
+                    }
+
+                    @Page(id: "6.searchresults.iflet", title: "") {
+                        We take a look and see if this item exists in the old list (which it should) and we find the index (position) of the original item by its `id` in the array.
+                        
+                        We remember this for later...
+                    }
+                    @Page(id: "6.searchresults.insert", title: "") {
+                        We insert the changed item at that same spot that the old one occupied, which is a little like adding a card to a deck... the old one is simply one index (position) further.
+                    }
+                    @Page(id: "6.searchresults.removeold", title: "") {
+                        Now we have two items in our array with the same `id`, which we don't want. So we need to remove the old item by using this method. Remember, the old item was originally in the `firstIndex` position in the array, but because we added a new one in front of it, we add 1 to the `firstIndex`, too, to remove it.
+                    }
+                    @Page(id: "6.outro", title: "") {
+                        And voila! We have a closet where we can add and remove items, search the closet, and even search for things to favorite then and there!
+                        
+                        So there you have it, a quick tour of how you might progress from a very first prototype to adding scaffolding to your app and constructing a real, working and dynamic app.
+                        
+                        Of course, there are many ways to accomplish a similar goal, but hopefully this will set you up with some handy tools and techniques for getting that app built!
+                    }
+                }
+            }
+        }
+    }
+}

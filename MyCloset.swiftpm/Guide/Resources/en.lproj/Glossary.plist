@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Terms</key>
+	<dict>
+		<key>modifier</key>
+		<dict>
+			<key>_LOCALIZABLE_</key>
+			<dict>
+				<key>Definition</key>
+				<string>In SwiftUI, a modifier is a line of code that will change the appearance or behavior of a view. Typically, we put them on the next line down, and they are preceded by a &apos;.&apos;</string>
+				<key>Title</key>
+				<string>modifier</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>
