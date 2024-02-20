@@ -1,12 +1,29 @@
+//
+//  SwiftUIView.swift
+//  
+//
+//  Created by Matthew Hanlon on 2/19/24.
+//
+
 import SwiftUI
 
-struct MySuperEditableSearchableAdvancedClosetView: View {
+/*#-code-walkthrough(7.searchscopeenum)*/
+enum ClosetSearchScope: String, CaseIterable {
+    case all
+    case favorites = "♥️"
+}
+/*#-code-walkthrough(7.searchscopeenum)*/
+
+struct MySuperScopedEditableSearchableAdvancedClosetView: View {
     @EnvironmentObject var myCloset: MyCloset
     
     @State var isAddingItem = false
     
     @State var searchText = ""
-    
+    /*#-code-walkthrough(7.searchscopestate)*/
+    @State var searchScope = ClosetSearchScope.all
+    /*#-code-walkthrough(7.searchscopestate)*/
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -30,6 +47,13 @@ struct MySuperEditableSearchableAdvancedClosetView: View {
                 }
                 .listStyle(.plain)
                 .searchable(text: $searchText)
+                /*#-code-walkthrough(7.searchscope)*/
+                .searchScopes($searchScope) {
+                    ForEach(ClosetSearchScope.allCases, id: \.self) { scope in
+                        Text(scope.rawValue.capitalized)
+                    }
+                }
+                /*#-code-walkthrough(7.searchscope)*/
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -53,32 +77,27 @@ struct MySuperEditableSearchableAdvancedClosetView: View {
         } else {
             return Binding {
                 return myCloset.clothingItems.filter {
-                    $0.name.localizedCaseInsensitiveContains(searchText.localizedLowercase) ||
-                    $0.size.localizedCaseInsensitiveContains(searchText.localizedLowercase)
+                    /*#-code-walkthrough(7.filter)*/
+                    let isMatched = (
+                        $0.name.localizedCaseInsensitiveContains(searchText.localizedLowercase) ||
+                        $0.size.localizedCaseInsensitiveContains(searchText.localizedLowercase)
+                    )
+                    
+                    return searchScope == .favorites ? isMatched && $0.isFavorite : isMatched
+                    /*#-code-walkthrough(7.filter)*/
                 }
-                /*#-code-walkthrough(6.searchresults)*/
             } set: { newValue in
-                /*#-code-walkthrough(6.searchresults.foreach)*/
                 for item in newValue {
-                    /*#-code-walkthrough(6.searchresults.foreach)*/
-                    /*#-code-walkthrough(6.searchresults.iflet)*/
                     if let firstIndex = myCloset.clothingItems.firstIndex(where: { $0.id == item.id }) {
-                        /*#-code-walkthrough(6.searchresults.iflet)*/
-                        /*#-code-walkthrough(6.searchresults.insert)*/
                         myCloset.clothingItems.insert(item, at: firstIndex)
-                        /*#-code-walkthrough(6.searchresults.insert)*/
-                        /*#-code-walkthrough(6.searchresults.removeold)*/
                         myCloset.clothingItems.remove(at: firstIndex + 1)
-                        /*#-code-walkthrough(6.searchresults.removeold)*/
                     }
                 }
             }
-            /*#-code-walkthrough(6.searchresults)*/
         }
     }
 }
-
 #Preview {
-    MySuperEditableSearchableAdvancedClosetView()
+    MySuperScopedEditableSearchableAdvancedClosetView()
         .environmentObject(MyCloset())
 }

@@ -1,0 +1,36 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Matthew Hanlon on 2/17/24.
+  
+*/
+"My Closet" = "My Closet";
+"Welcome to My Closet!" = "Welcome to My Closet!";
+"In My Closet, you're going to explore how to build the foundations of an app, bit by bit." = "In My Closet, you're going to explore how to build the foundations of an app, bit by bit.";
+
+"Oftentimes coders start out building an app and make changes to simplify the code they have to write or perform a common task." = "Oftentimes coders start out building an app and make changes to simplify the code they have to write or perform a common task.";
+"In this walk-through, we'll look at how we build out an app that would list the items of clothing in our closet, and add some features as we go that seem like a logical next step for the app." = "In this walk-through, we'll look at how we build out an app that would list the items of clothing in our closet, and add some features as we go that seem like a logical next step for the app.";
+"While more files might seem like more work, by separating our code out our goal is to organize our thinking a little bit and make it easier to read the code, in the end." = "While more files might seem like more work, by separating our code out our goal is to organize our thinking a little bit and make it easier to read the code, in the end.";
+
+"Our First Closet" = "Our First Closet";
+"For starters, check out the ContentView for a way to build out a listing of items in your closet." = "For starters, check out the ContentView for a way to build out a listing of items in your closet.";
+
+"Starting simple" = "Starting simple";
+"This is our content view, where we use a constant, called `clothingItems`, which is a list of these things called `ClothingItem`. That represents a closet full of clothing items we're trying to catalog or track." = "This is our content view, where we use a constant, called `clothingItems`, which is a list of these things called `ClothingItem`. That represents a closet full of clothing items we're trying to catalog or track.";
+"We'll talk more about that in a second." = "We'll talk more about that in a second.";
+
+"We use a `ForEach` statement to draw a representation of each clothing item in our closet." = "We use a `ForEach` statement to draw a representation of each clothing item in our closet.";
+"Let's take a look at the type we use to hold information about our clothing items." = "Let's take a look at the type we use to hold information about our clothing items.";
+
+"A custom type" = "A custom type";
+"We've created a new type, called `ClothingItem` in this file: `ClothingItem.swift`." = "We've created a new type, called `ClothingItem` in this file: `ClothingItem.swift`.";
+"Best practice: We started our type name with a capital letter and used camel-case to capitalize the first letter of each word in our type name." = "Best practice: We started our type name with a capital letter and used camel-case to capitalize the first letter of each word in our type name.";
+"This makes our code easier to read quickly, if we follow certain conventions." = "This makes our code easier to read quickly, if we follow certain conventions.";
+"We care about the name and size of our clothing item, and whether or not it's one of our favorites." = "We care about the name and size of our clothing item, and whether or not it's one of our favorites.";
+"What properties would you care about in your app?" = "What properties would you care about in your app?";
+"Maybe a color property?" = "Maybe a color property?";
+"Whether or not you'd leant it out to a friend?" = "Whether or not you'd leant it out to a friend?";
+"How long you've had it?" = "How long you've had it?";
+
+"A Custom View Closet" = "A Custom View Closet";
